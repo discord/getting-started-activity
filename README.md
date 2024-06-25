@@ -7,17 +7,24 @@ Read more about building Discord Activities with the Embedded App SDK at [https:
 ## Setup:
 - visit the [discord developer portal/applications](https://discord.com/developers/applications)
 - create your app there
-- `cd` into your codebase
-- run `"VITE_DISCORD_CLIENT_ID=YOUR_DISCORD_CLIENT_ID_HERE
-DISCORD_CLIENT_SECRET=YOUR_DISCORD_CLIENT_SECRET" >> .env`
-  - entering the values you got from the discord developer portal
-- `cd client`
-- `npm i`
+```powershell
+# cd into app root & run the following:
+# entering the values you got from the discord developer portal
+"VITE_DISCORD_CLIENT_ID=YOUR_DISCORD_CLIENT_ID_HERE$("`n")
+DISCORD_CLIENT_SECRET=YOUR_DISCORD_CLIENT_SECRET" >> .env
+```
+- install
+```powershell
+cd client
+npm i
+```
 - check for `"@discord/embedded-app-sdk": "^1.2.0"` in your `.\client\package.json`
   - if it is missing run `npm install @discord/embedded-app-sdk`
-- `cd ..`
-- `cd server`
-- `npm i`
+```powershell
+cd ..
+cd server
+npm i
+```
 
 ## Tunnel:
 - [Discord recommends `cloudflared`](https://github.com/cloudflare/cloudflared?tab=readme-ov-file#installing-cloudflared)
