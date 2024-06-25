@@ -9,7 +9,7 @@ Read more about building Discord Activities with the Embedded App SDK at [https:
 - create your app there
 - `cd` into your codebase
 - run `"VITE_DISCORD_CLIENT_ID=YOUR_DISCORD_CLIENT_ID_HERE
-DISCORD_CLIENT_SECRET=YOUR_DISCORD_CLIENT_SECRET" >> .env
+DISCORD_CLIENT_SECRET=YOUR_DISCORD_CLIENT_SECRET" >> .env`
   - entering the values you got from the discord developer portal
 - `cd client`
 - `npm i`
