@@ -28,6 +28,8 @@ npm i
 
 ## Tunnel:
 - [Discord recommends `cloudflared`](https://github.com/cloudflare/cloudflared?tab=readme-ov-file#installing-cloudflared)
+
+*deprecated*
 - i used [localtunnel](https://theboroer.github.io/localtunnel-www/)
   - run `npm i -g localtunnel` (if you don't already have it globally installed)
   - run `lt --port 5173` or whatever port your vite `npm run dev` generates
