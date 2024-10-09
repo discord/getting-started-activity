@@ -62,7 +62,9 @@ async function fetchQuotes() {
         <ul id="options">
           ${allOptions.map((option, index) => `<p><button data-answer="${option === randomQuote.nonQuote}" id="option-${index}">${option}</button></p>`).join('')}
         </ul>
-        <button id="nextQuestion" style="display: none;">Next Question</button>
+        <br>
+        <br>
+        <button id="nextQuestion"">Next Question</button>
       </div>
     `;
 
@@ -84,11 +86,9 @@ async function fetchQuotes() {
                     this.style.backgroundColor = 'red';  // Highlight the wrong answer in red
                 }
 
-                // Show the Next Question button
-                document.querySelector('#nextQuestion').style.display = 'block';
+
             });
         });
-
         // Add event listener for the Next Question button
         document.querySelector('#nextQuestion').addEventListener('click', function() {
             fetchQuotes();  // Fetch a new question

@@ -30,6 +30,11 @@ body {
   min-height: 100vh;
 }
 
+ul {
+  padding: 0;
+  list-style-type: none;
+}
+
 h1 {
   font-size: 3.2em;
   line-height: 1.1;
