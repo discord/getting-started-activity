@@ -30,15 +30,18 @@ function processIniFile(inputFile, outputFile, nonQuotedFile) {
 
             // If non-quoted text exists, proceed to modify the line
             if (cleanedNonQuotedText) {
+                const lowerCaseNonQuoted = cleanedNonQuotedText.toLowerCase(); // Normalize case
                 // Write the modified line to output.ini regardless of duplicates in non-quoted parts
-                let modifiedLine = `[${cleanedNonQuotedText}] ${quotedText.trim()}`;
+                let modifiedLine = `[${lowerCaseNonQuoted}] ${quotedText.trim()}`;
                 writeStream.write(modifiedLine + '\n'); // Write modified line to output file
 
-                // Handle duplicates only for nonquoted.txt
-                const lowerCaseNonQuoted = cleanedNonQuotedText.toLowerCase(); // Normalize case
-                if (!uniqueNonQuoted.has(lowerCaseNonQuoted)) {
+                if (!lowerCaseNonQuoted.includes('"')) {
                     uniqueNonQuoted.add(lowerCaseNonQuoted); // Add only unique non-quoted text
                 }
+                // Handle duplicates only for nonquoted.txt
+                // if (!uniqueNonQuoted.has(lowerCaseNonQuoted)) {
+                //     uniqueNonQuoted.add(lowerCaseNonQuoted); // Add only unique non-quoted text
+                // }
             }
         }
     });

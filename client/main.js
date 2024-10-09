@@ -1,5 +1,5 @@
-import './style.css'
-import platoFoto from '/plato.png'
+import './style.css';
+import platoFoto from '/plato.png';
 
 // Function to fetch and parse the output.ini file
 async function fetchQuotes() {
@@ -35,22 +35,65 @@ async function fetchQuotes() {
         const randomQuoteIndex = Math.floor(Math.random() * quotesArray.length);
         const randomQuote = quotesArray[randomQuoteIndex];
 
-        // Pick 3 random non-quotes from nonquoted.txt
-        const randomNonQuotes = [];
-        for (let i = 0; i < 3; i++) {
+        // Pick 3 random incorrect non-quotes from nonquoted.txt
+        const incorrectNonQuotes = [];
+        while (incorrectNonQuotes.length < 3) {
             const randomIndex = Math.floor(Math.random() * nonQuotedLines.length);
-            randomNonQuotes.push(nonQuotedLines[randomIndex]);
+            const nonQuote = nonQuotedLines[randomIndex];
+
+            // Ensure the incorrect non-quote isn't the correct one and isn't already selected
+            if (nonQuote !== randomQuote.nonQuote && !incorrectNonQuotes.includes(nonQuote)) {
+                incorrectNonQuotes.push(nonQuote);
+            }
         }
+
+        // Combine the correct non-quote with the incorrect ones
+        const allOptions = [...incorrectNonQuotes];
+
+        // Insert the correct answer at a random position
+        const randomPosition = Math.floor(Math.random() * (incorrectNonQuotes.length + 1));
+        allOptions.splice(randomPosition, 0, randomQuote.nonQuote);
 
         // Display the random quote and non-quotes in the HTML
         document.querySelector('#app').innerHTML = `
       <div>
         <img src="${platoFoto}" class="logo" alt="Plato" />
         <h2>"${randomQuote.quote}"</h2>
-        <p><button>${randomQuote.nonQuote}</button></p>
-         ${randomNonQuotes.map(nonQuote => `<p><button>${nonQuote}</button></p>`).join('')}
+        <ul id="options">
+          ${allOptions.map((option, index) => `<p><button data-answer="${option === randomQuote.nonQuote}" id="option-${index}">${option}</button></p>`).join('')}
+        </ul>
+        <button id="nextQuestion" style="display: none;">Next Question</button>
       </div>
     `;
+
+        // Add event listeners to the buttons for guessing
+        document.querySelectorAll('#options button').forEach(button => {
+            button.addEventListener('click', function() {
+                const isCorrect = this.getAttribute('data-answer') === 'true';
+
+                // Disable all buttons after selection
+                document.querySelectorAll('#options button').forEach(btn => {
+                    btn.disabled = true;  // Disable all buttons after the user clicks one
+                    if (btn.getAttribute('data-answer') === 'true') {
+                        btn.style.backgroundColor = 'green';  // Highlight the correct answer in green
+                    }
+                });
+
+                // Highlight the clicked button
+                if (!isCorrect) {
+                    this.style.backgroundColor = 'red';  // Highlight the wrong answer in red
+                }
+
+                // Show the Next Question button
+                document.querySelector('#nextQuestion').style.display = 'block';
+            });
+        });
+
+        // Add event listener for the Next Question button
+        document.querySelector('#nextQuestion').addEventListener('click', function() {
+            fetchQuotes();  // Fetch a new question
+        });
+
     } catch (error) {
         console.error('Error fetching or processing the files:', error);
     }
