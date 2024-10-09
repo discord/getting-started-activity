@@ -63,8 +63,7 @@ async function fetchQuotes() {
           ${allOptions.map((option, index) => `<p><button data-answer="${option === randomQuote.nonQuote}" id="option-${index}">${option}</button></p>`).join('')}
         </ul>
         <br>
-        <br>
-        <button id="nextQuestion"">Next Question</button>
+        <small><button id="nextQuestion" style="color:#424242">Volgende</button></small>
       </div>
     `;
 
@@ -86,6 +85,7 @@ async function fetchQuotes() {
                     this.style.backgroundColor = 'red';  // Highlight the wrong answer in red
                 }
 
+                document.querySelector('#nextQuestion').style.color = '#FFFFFF';
 
             });
         });
