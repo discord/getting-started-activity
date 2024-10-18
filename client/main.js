@@ -37,7 +37,7 @@ async function fetchQuotes() {
 
         // Pick 3 random incorrect non-quotes from nonquoted.txt
         const incorrectNonQuotes = [];
-        while (incorrectNonQuotes.length < 3) {
+        while (incorrectNonQuotes.length < 5) {
             const randomIndex = Math.floor(Math.random() * nonQuotedLines.length);
             const nonQuote = nonQuotedLines[randomIndex];
 
@@ -60,7 +60,7 @@ async function fetchQuotes() {
         <img src="${platoFoto}" class="logo" alt="Plato" />
         <h2>"${randomQuote.quote}"</h2>
         <ul id="options">
-          ${allOptions.map((option, index) => `<p><button data-answer="${option === randomQuote.nonQuote}" id="option-${index}">${option}</button></p>`).join('')}
+          ${allOptions.map((option, index) => `<li><button data-answer="${option === randomQuote.nonQuote}" id="option-${index}">${option}</button></li>`).join('')}
         </ul>
         <br>
         <small><button id="nextQuestion" style="color:#424242">Volgende</button></small>
