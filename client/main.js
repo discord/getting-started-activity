@@ -3,76 +3,60 @@ import platoFoto from '/plato.png';
 
 async function getAllQuotes() {
     try {
-        // Fetch both the output.ini and nonquoted.txt files
-        const [outputResponse, nonQuotedResponse] = await Promise.all([
-            fetch('/parsed-quotes.ini'),    // Path to output.ini
-            fetch('/nonquoted.txt')  // Path to nonquoted.txt
-        ]);
+        // Make the request to the server
+        const response = await fetch('http://localhost:3001/all_quotes');
 
-        const outputData = await outputResponse.text();
-        const nonQuotedData = await nonQuotedResponse.text();
+        const data = await response.json();
 
-        // Split the files into lines
-        const outputLines = outputData.split('\n').filter(line => line.trim() !== '');
-        const authors = nonQuotedData.split('\n').filter(line => line.trim() !== '');
+        // Access the first array from the response
+        const quotes = data[0];  // First part contains the quotes
+        const authors = data[1];   // Second part contains the names
 
-        // Extract non-quoted and quoted parts from output.ini
-        const quotes = outputLines.map(line => {
-            const nonQuoteMatch = line.match(/\[(.*?)\]/); // Match text inside square brackets
-            const quoteMatch = line.match(/"(.*?)"/); // Match text inside quotes
+        if (!Array.isArray(quotes) || !Array.isArray(authors)) {
+            throw new TypeError('Expected arrays in the response.');
+        }
 
-            if (nonQuoteMatch && quoteMatch) {
-                return {
-                    nonQuote: nonQuoteMatch[1],
-                    quote: quoteMatch[1]
-                };
-            }
-            return null;
-        }).filter(item => item !== null); // Filter out null values
         return [quotes, authors];
     } catch (error) {
-        console.error('Error fetching or processing the files:', error);
+        document.querySelector('#app').innerHTML = `<p>Connection to server lost :(</p>`;
+        console.error('Error fetching quotes:', error);
+    }
+}
+
+async function getRandomQuotes() {
+    try {
+        // Make the request to the server
+        const response = await fetch('http://localhost:3001/random_quotes');
+
+        const data = await response.json();
+
+        // Access the first array from the response
+        const randomQuote = data[0];  // First part contains the quotes
+        const allOptions = data[1];   // Second part contains the names
+
+        return [randomQuote, allOptions];
+    } catch (error) {
+        document.querySelector('#app').innerHTML = `<p>Connection to server lost :(</p>`;
+        console.error('Error fetching quotes:', error);
     }
 }
 
 // Function to fetch and parse the output.ini file
 async function fetchQuotes() {
-    const [quotesArray, nonQuotedLines] = await getAllQuotes();
-    // Pick a random quote and non-quote combination from output.ini
-    const randomQuoteIndex = Math.floor(Math.random() * quotesArray.length);
-    const randomQuote = quotesArray[randomQuoteIndex];
-
-    // Pick 3 random incorrect non-quotes from nonquoted.txt
-    const incorrectNonQuotes = [];
-    while (incorrectNonQuotes.length < 5) {
-        const randomIndex = Math.floor(Math.random() * nonQuotedLines.length);
-        const nonQuote = nonQuotedLines[randomIndex];
-
-        // Ensure the incorrect non-quote isn't the correct one and isn't already selected
-        if (nonQuote !== randomQuote.nonQuote && !incorrectNonQuotes.includes(nonQuote)) {
-            incorrectNonQuotes.push(nonQuote);
-        }
-    }
-
-    // Combine the correct non-quote with the incorrect ones
-    const allOptions = [...incorrectNonQuotes];
-
-    // Insert the correct answer at a random position
-    const randomPosition = Math.floor(Math.random() * (incorrectNonQuotes.length + 1));
-    allOptions.splice(randomPosition, 0, randomQuote.nonQuote);
+    const [randomQuote, allOptions] = await getRandomQuotes();
 
     // Display the random quote and non-quotes in the HTML
     document.querySelector('#app').innerHTML = `
-    <div>
-    <img src="${platoFoto}" class="logo" alt="Plato" />
-    <h2>"${randomQuote.quote}"</h2>
-    <ul id="options">
-        ${allOptions.map((option, index) => `<li><button data-answer="${option === randomQuote.nonQuote}" id="option-${index}">${option}</button></li>`).join('')}
-    </ul>
-    <br>
-    <small><button id="nextQuestion" style="color:#424242">Volgende</button></small>
-    </div>
-`;
+        <div>
+        <img src="${platoFoto}" class="logo" alt="Plato" />
+        <h2>"${randomQuote.quote}"</h2>
+        <ul id="options">
+            ${allOptions.map((option, index) => `<li><button data-answer="${option === randomQuote.nonQuote}" id="option-${index}">${option}</button></li>`).join('')}
+        </ul>
+        <br>
+        <small><button id="nextQuestion" style="color:#424242">Volgende</button></small>
+        </div>
+    `;
 
     // Add event listeners to the buttons for guessing
     document.querySelectorAll('#options button').forEach(button => {

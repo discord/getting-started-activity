@@ -5,12 +5,16 @@ dotenv.config({ path: "../.env" });
 import { promises as fs } from 'fs';
 import path from 'path';
 import { fileURLToPath } from "url";
+import cors from "cors";
 
 const app = express();
 const port = 3001;
 
 // Allow express to parse JSON bodies
 app.use(express.json());
+app.use(cors({
+  origin: 'http://localhost:5173'
+}));
 
 // LOAD ALL QUOTES FROM FILES ==============================================//
 const __filename = fileURLToPath(import.meta.url);
@@ -36,8 +40,36 @@ const quotes = outputLines.map(line => {
 
 // GET REQUESTS ==============================================//
 app.get("/all_quotes", async (req, res) => {
-  res.send([quotes, authors]);
+  res.json([quotes, authors]);
 });
+
+app.get("/random_quotes", async (req, res) => {
+  // Pick a random quote and non-quote combination from output.ini
+  const randomQuoteIndex = Math.floor(Math.random() * quotes.length);
+  const randomQuote = quotes[randomQuoteIndex];
+
+  // Pick 3 random incorrect non-quotes from nonquoted.txt
+  const incorrectNonQuotes = [];
+  while (incorrectNonQuotes.length < 5) {
+      const randomIndex = Math.floor(Math.random() * authors.length);
+      const nonQuote = authors[randomIndex];
+
+      // Ensure the incorrect non-quote isn't the correct one and isn't already selected
+      if (nonQuote !== randomQuote.nonQuote && !incorrectNonQuotes.includes(nonQuote)) {
+          incorrectNonQuotes.push(nonQuote);
+      }
+  }
+
+  // Combine the correct non-quote with the incorrect ones
+  const allOptions = [...incorrectNonQuotes];
+
+  // Insert the correct answer at a random position
+  const randomPosition = Math.floor(Math.random() * (incorrectNonQuotes.length + 1));
+  allOptions.splice(randomPosition, 0, randomQuote.nonQuote);
+
+  res.json([randomQuote, allOptions]);
+});
+
 
 // POST REQUESTS ==============================================//
 app.post("/api/token", async (req, res) => {
