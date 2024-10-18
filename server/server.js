@@ -38,15 +38,14 @@ const quotes = outputLines.map(line => {
     return null;
 }).filter(item => item !== null);
 
-// GET REQUESTS ==============================================//
-app.get("/all_quotes", async (req, res) => {
-  res.json([quotes, authors]);
-});
+let randomQuote = null;
+let allOptions = null;
+let startTime = Date.now();
 
-app.get("/random_quotes", async (req, res) => {
+function pickNewRandomQuote() {
   // Pick a random quote and non-quote combination from output.ini
   const randomQuoteIndex = Math.floor(Math.random() * quotes.length);
-  const randomQuote = quotes[randomQuoteIndex];
+  randomQuote = quotes[randomQuoteIndex];
 
   // Pick 3 random incorrect non-quotes from nonquoted.txt
   const incorrectNonQuotes = [];
@@ -61,13 +60,26 @@ app.get("/random_quotes", async (req, res) => {
   }
 
   // Combine the correct non-quote with the incorrect ones
-  const allOptions = [...incorrectNonQuotes];
+  allOptions = [...incorrectNonQuotes];
 
   // Insert the correct answer at a random position
   const randomPosition = Math.floor(Math.random() * (incorrectNonQuotes.length + 1));
   allOptions.splice(randomPosition, 0, randomQuote.nonQuote);
+  startTime = Date.now();
+}
+setInterval(pickNewRandomQuote, 12000);
 
+// GET REQUESTS ==============================================//
+// app.get("/all_quotes", async (req, res) => {
+//   res.json([quotes, authors]);
+// });
+
+app.get("/random_quotes", async (req, res) => {
   res.json([randomQuote, allOptions]);
+});
+
+app.get("/start_time", async (req, res) => {
+  res.json(startTime);
 });
 
 

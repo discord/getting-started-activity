@@ -24,7 +24,7 @@ a:hover {
 
 body {
   margin: 0;
-  display: flex;
+  display: block;
   place-items: center;
   min-width: 320px;
   min-height: 100vh;
@@ -50,8 +50,8 @@ h1 {
 #app {
   max-width: 1280px;
   margin: 0 auto;
-  padding: 2rem;
   text-align: center;
+  margin-bottom: 20px;
 }
 
 .logo {
@@ -85,6 +85,17 @@ button:hover {
 button:focus,
 button:focus-visible {
   outline: 4px auto -webkit-focus-ring-color;
+}
+
+.slider-container {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  margin-top: 20px;
+}
+
+input[type="range"] {
+  width: 80%; /* Adjust slider width */
 }
 
 @media (prefers-color-scheme: light) {
