@@ -17,7 +17,19 @@ async function getRandomQuotes() {
         return [randomQuote, allOptions];
     } catch (error) {
         document.querySelector('#app').innerHTML = `<p>Connection to server lost :(</p>`;
-        console.error('Error fetching quotes:', error);
+        console.error('Error fetching quotes: ', error);
+    }
+}
+
+async function updateStartTime() {
+    try {
+        // Make the request to the server
+        const response = await fetch('http://localhost:3001/start_time');
+
+        const data = await response.json();
+        startTime = data;
+    } catch (error) {
+        console.error('Error getting time: ', error);
     }
 }
 
@@ -34,7 +46,7 @@ async function mainLoop() {
     if (currentQuote != null && randomQuote.quote === currentQuote.quote) {
         return;
     }
-    startTime = Date.now();
+    await updateStartTime();
     currentQuote = randomQuote;
 
     // Display the random quote and non-quotes in the HTML
