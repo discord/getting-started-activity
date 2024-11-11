@@ -89,6 +89,31 @@ async function mainLoop() {
     setTimeout(displayAnswerFeedback, remainingTime);
 }
 
+document.getElementById("start-game-button").addEventListener("click", function() {
+    // Get the player's name from the input field
+    const playerName = document.getElementById("player-name").value;
+
+    if (playerName.trim() !== "") {
+        // Hide the menu view and show the game view
+        document.getElementById("menu-view").style.display = "none";
+        document.getElementById("slider-container").style.display = "flex";
+        document.getElementById("app").style.display = "block";
+        document.getElementById("app-menu").style.display = "block";
+        document.getElementById("scoreboard").style.display = "block";
+    } else {
+        alert("Please enter your name to start the game.");
+    }
+});
+
+document.getElementById("leave-game-button").addEventListener("click", function() {
+    // Hide the menu view and show the game view
+    document.getElementById("menu-view").style.display = "block";
+    document.getElementById("slider-container").style.display = "none";
+    document.getElementById("app").style.display = "none";
+    document.getElementById("app-menu").style.display = "none";
+    document.getElementById("scoreboard").style.display = "none";
+});
+
 // Call the function to fetch and display a random quote and non-quotes
 setInterval(mainLoop, 1000);
 setInterval(updateTime, 10);

@@ -7,11 +7,32 @@
     <title>Quotus</title>
   </head>
   <body>
+    <div id="header">
+      <div class="header-panel" id="app-menu" style="display: none">
+        <button id="leave-game-button">Spel verlaten</button>
+      </div>
     <img src="/plato.png" class="logo" alt="Plato" />
-    <div id="app"></div>
-    <div class="slider-container">
+      <div class="header-panel" id="scoreboard" style="display: none">
+        <h2>Scoreboard</h2>
+        <ul id="score-list">
+          <li>Player 1: 100</li>
+          <li>Player 2: 80</li>
+          <li>Player 3: 60</li>
+        </ul>
+      </div>
+    </div>
+    <div id="menu-view">
+        <h1>Quotus</h1>
+        <label for="player-name">Naam:</label>
+        <input type="text" id="player-name" placeholder="Henk Henkens">
+        <button id="start-game-button">Start</button>
+    </div>
+
+    <div id="app" style="display: none"></div>
+    <div id="slider-container" style="display: none">
       <input type="range" id="slider" min="0" max="100" value="100" disabled>
     </div>
+
     <script type="module" src="/main.js"></script>
   </body>
 </html>
