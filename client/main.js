@@ -7,13 +7,10 @@ async function getRandomQuotes() {
     try {
         // Make the request to the server
         const response = await fetch('http://localhost:3001/random_quotes');
-
         const data = await response.json();
-
         // Access the first array from the response
         const randomQuote = data[0];  // First part contains the quotes
         const allOptions = data[1];   // Second part contains the names
-
         return [randomQuote, allOptions];
     } catch (error) {
         document.querySelector('#app').innerHTML = `<p>Connection to server lost :(</p>`;
@@ -49,18 +46,52 @@ async function mainLoop() {
     await updateStartTime();
     currentQuote = randomQuote;
 
+    let correctIndex = -1;
+    let selectedIndex = -1;
+    for (let i = 0; i < allOptions.length; i++) {
+        if (allOptions[i] === randomQuote.nonQuote) {
+            correctIndex = i;
+            break;
+        }
+    }
     // Display the random quote and non-quotes in the HTML
     document.querySelector('#app').innerHTML = `
         <h2>"${randomQuote.quote}"</h2>
         <ul id="options">
-            ${allOptions.map((option, index) => `<li><button data-answer="${option === randomQuote.nonQuote}" id="option-${index}">${option}</button></li>`).join('')}
+            ${allOptions.map((option, index) => `<li><button id="option-${index}">${option}</button></li>`).join('')}
         </ul>
     `;
+
+    document.querySelectorAll('#options button').forEach((button, index) => {
+    button.addEventListener('click', function () {
+        selectedIndex = index;
+        document.querySelectorAll('#options button').forEach(btn => btn.style.backgroundColor = '');
+        this.style.backgroundColor = '#555555';
+    });
+
+    function displayAnswerFeedback() {
+    document.querySelectorAll('#options button').forEach((button, index) => {
+        // Always highlight the correct answer in green
+        if (index === correctIndex) {
+            button.style.backgroundColor = 'green';
+        }
+        // If selected index is incorrect, highlight it in red
+        else if (index === selectedIndex) {
+            button.style.backgroundColor = 'red';
+        }
+
+        // Disable all buttons after feedback is shown
+        button.disabled = true;
+    });
+
+    setTimeout(displayAnswerFeedback, 10000);
+}
+});
 
     // Add event listeners to the buttons for guessing
     document.querySelectorAll('#options button').forEach(button => {
         button.addEventListener('click', function() {
-            const isCorrect = this.getAttribute('data-answer') === 'true';
+            const isCorrect = this.getAttribute('id') === "option-" + correctIndex;
 
             // Disable all buttons after selection
             document.querySelectorAll('#options button').forEach(btn => {
@@ -71,7 +102,7 @@ async function mainLoop() {
                     }, startTime + 10000 - Date.now());
                 } else {
                     setTimeout(function(){
-                        if (btn.getAttribute('data-answer') === 'true') {
+                        if (btn.getAttribute('id') === "option-" + correctIndex) {
                             btn.style.backgroundColor = 'green';  // Highlight the correct answer in green
                         }
                     }, startTime + 10000 - Date.now());
