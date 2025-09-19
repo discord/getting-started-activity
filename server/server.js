@@ -10,7 +10,7 @@ const port = 3001;
 app.use(express.json());
 
 app.post("/api/token", async (req, res) => {
-  
+
   // Exchange the code for an access_token
   const response = await fetch(`https://discord.com/api/oauth2/token`, {
     method: "POST",
