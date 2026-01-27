@@ -9,6 +9,9 @@ lerna-debug.log*
 
 node_modules
 
+# Lock files
+package-lock.json
+
 # Sensitive environment variables
 .env
 

@@ -12,22 +12,25 @@
     "canvas-confetti": "^1.9.3",
     "classnames": "^2.5.1",
     "howler": "^2.2.4",
-    "next": "15.0.1",
-    "react": "19.0.0-rc-69d4b800-20241021",
-    "react-dom": "19.0.0-rc-69d4b800-20241021"
+    "next": "^15.1.11",
+    "react": "^19.1.0",
+    "react-dom": "^19.1.0"
   },
   "devDependencies": {
+    "@eslint/eslintrc": "^3.3.3",
     "@types/canvas-confetti": "^1.6.4",
     "@types/howler": "^2.2.12",
-    "@types/node": "^20",
-    "@types/react": "^18",
-    "@types/react-dom": "^18",
+    "@types/node": "^22",
+    "@types/react": "^19",
+    "@types/react-dom": "^19",
+    "@typescript-eslint/eslint-plugin": "^8.54.0",
+    "@typescript-eslint/parser": "^8.54.0",
     "autoprefixer": "^10.4.20",
     "daisyui": "^4.12.14",
-    "eslint": "^8",
-    "eslint-config-next": "15.0.1",
-    "postcss": "^8.4.47",
-    "tailwindcss": "^3.4.14",
+    "eslint": "^9",
+    "eslint-config-next": "^15.1.11",
+    "postcss": "^8.5.3",
+    "tailwindcss": "^3.4.17",
     "typescript": "^5"
   }
 }
