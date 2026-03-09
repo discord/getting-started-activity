@@ -10,7 +10,12 @@ const port = 3001;
 app.use(express.json());
 
 app.post("/api/token", async (req, res) => {
-  
+  const code = req.body.code;
+
+  if (!code) {
+    return res.status(400).send({ error: "Missing authorization code" });
+  }
+
   // Exchange the code for an access_token
   const response = await fetch(`https://discord.com/api/oauth2/token`, {
     method: "POST",
@@ -21,15 +26,19 @@ app.post("/api/token", async (req, res) => {
       client_id: process.env.VITE_DISCORD_CLIENT_ID,
       client_secret: process.env.DISCORD_CLIENT_SECRET,
       grant_type: "authorization_code",
-      code: req.body.code,
+      code,
     }),
   });
 
   // Retrieve the access_token from the response
-  const { access_token } = await response.json();
+  const data = await response.json();
+
+  if (!response.ok || !data.access_token) {
+    return res.status(response.status).send({ error: data.error ?? "Token exchange failed" });
+  }
 
   // Return the access_token to our client as { access_token: "..."}
-  res.send({access_token});
+  res.send({ access_token: data.access_token });
 });
 
 app.listen(port, () => {
