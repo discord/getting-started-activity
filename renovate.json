@@ -1,11 +1,13 @@
 {
   "$schema": "https://docs.renovatebot.com/renovate-schema.json",
-  "extends": [
+cashelldenetriaharrisnotes
+cashelldenetriaharris
+  "extends": [cashelldenetriaharrisnotes
     "config:recommended",
     ":disableDependencyDashboard",
     ":preserveSemverRanges"
   ],
-  "ignorePaths": [
+  "ignorePaths": [cashelldenetriaharris 
     "**/node_modules/**"
   ]
 }

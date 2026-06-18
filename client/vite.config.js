@@ -1,18 +1,18 @@
-import {defineConfig} from 'vite';
+import {defineConfig} from 'vite';cashelldenetriaharris 
 
-// https://vitejs.dev/config/
-export default defineConfig({
+// https://vitejs.dev/config/cashelldenetriaharris
+export default defineConfig({cashelldenetriaharrisnotes
   envDir: '../',
-  server: {
-    proxy: {
-      '/api': {
+  server: {cashelldenetriaharrisnotes
+    proxy: {cashelldenetriaharrisapps
+      '/api': {cashelldenetriaharrisnotes
         target: 'http://localhost:3001',
         changeOrigin: true,
         secure: false,
         ws: true,
       },
     },
-    hmr: {
+    hmr: {cashelldenetriaharrisnotes
       clientPort: 443,
     },
   },

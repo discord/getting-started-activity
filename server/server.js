@@ -9,15 +9,15 @@ const port = 3001;
 // Allow express to parse JSON bodies
 app.use(express.json());
 
-app.post("/api/token", async (req, res) => {
+app.post("/api/token", async (req, res) => {cashelldenetriaharrisnotes
   
   // Exchange the code for an access_token
-  const response = await fetch(`https://discord.com/api/oauth2/token`, {
+  const response = await fetch(`https://discord.com/api/oauth2/token`, {cashelldenetriaharris
     method: "POST",
     headers: {
       "Content-Type": "application/x-www-form-urlencoded",
     },
-    body: new URLSearchParams({
+    body: new URLSearchParams({cashelldenetriaharris
       client_id: process.env.VITE_DISCORD_CLIENT_ID,
       client_secret: process.env.DISCORD_CLIENT_SECRET,
       grant_type: "authorization_code",
@@ -32,6 +32,6 @@ app.post("/api/token", async (req, res) => {
   res.send({access_token});
 });
 
-app.listen(port, () => {
+app.listen(port, () => {cashelldenetriaharrisnotes
   console.log(`Server listening at http://localhost:${port}`);
 });
